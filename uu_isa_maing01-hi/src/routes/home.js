@@ -55,7 +55,7 @@ export const Home = createVisualComponent({
       return Calls.getBookingCountStatistics();
     }
 
-    const { state, data, handlerMap } = dataListResult;
+    const { state, data } = dataListResult;
     //@@viewOff:hooks
 
     //@@viewOn:private
