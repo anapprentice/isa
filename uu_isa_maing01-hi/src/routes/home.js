@@ -1,13 +1,13 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useEffect, useRef, useState } from "uu5g04-hooks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-bricks";
+import "uu5amchartsg01";
 
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
-import WelcomeRow from "../bricks/welcome-row.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -46,6 +46,75 @@ export const Home = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
+
+    let chartComponent = useRef();
+    let chartData = useState(null);
+    function onChartDidMount(chart) {
+      console.log("Chart : ", chart);
+      chartData = chart;
+    }
+
+    if (chartData != null) {
+      console.log(chartData);
+      useEffect(() => {
+        const chart = chartComponent.chart;
+        const am4core = chartComponent.am4core;
+        const am4charts = chartComponent.am4charts;
+
+        chart.data = [
+          {
+            country: "Lithuania",
+            litres: 501.9,
+          },
+          {
+            country: "Czech Republic",
+            litres: 301.9,
+          },
+          {
+            country: "Ireland",
+            litres: 201.1,
+          },
+          {
+            country: "Germany",
+            litres: 165.8,
+          },
+          {
+            country: "Australia",
+            litres: 139.9,
+          },
+          {
+            country: "Austria",
+            litres: 128.3,
+          },
+          {
+            country: "UK",
+            litres: 99,
+          },
+          {
+            country: "Belgium",
+            litres: 60,
+          },
+          {
+            country: "The Netherlands",
+            litres: 50,
+          },
+        ];
+
+        // Add and configure Series
+        let pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "litres";
+        pieSeries.dataFields.category = "country";
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeWidth = 2;
+        pieSeries.slices.template.strokeOpacity = 1;
+
+        // This creates initial animation
+        pieSeries.hiddenState.properties.opacity = 1;
+        pieSeries.hiddenState.properties.endAngle = -90;
+        pieSeries.hiddenState.properties.startAngle = -90;
+      });
+    }
+
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -53,6 +122,7 @@ export const Home = createVisualComponent({
 
     //@@viewOn:render
     const attrs = UU5.Common.VisualComponent.getAttrs(props);
+
     return (
       <div {...attrs}>
         <UU5.Bricks.Row className={CLASS_NAMES.welcomeRow()}>
@@ -67,7 +137,7 @@ export const Home = createVisualComponent({
           </UU5.Bricks.Column>
         </UU5.Bricks.Row>
         <UU5.Bricks.Row className={CLASS_NAMES.welcomeRow()}>
-          {/*TODO: Content of welcome page*/}
+          <UU5.AmCharts.Chart type={"PieChart"} onMount={onChartDidMount} ref={chartComponent} />
         </UU5.Bricks.Row>
       </div>
     );
