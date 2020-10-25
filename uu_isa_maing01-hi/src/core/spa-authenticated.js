@@ -8,7 +8,6 @@ import "uu_plus4u5g01-app";
 import Config from "./config/config";
 import Left from "./left";
 import Bottom from "./bottom";
-import Home from "../routes/home";
 //@@viewOff:imports
 
 const STATICS = {
@@ -16,18 +15,15 @@ const STATICS = {
   displayName: Config.TAG + "SpaAuthenticated",
   //@@viewOff:statics
 };
-
+const Home = UU5.Common.Component.lazy(() => import("../routes/home"));
 const About = UU5.Common.Component.lazy(() => import("../routes/about"));
-const InitAppWorkspace = UU5.Common.Component.lazy(() => import("../routes/init-app-workspace"));
-const ControlPanel = UU5.Common.Component.lazy(() => import("../routes/control-panel"));
 
 const DEFAULT_USE_CASE = "home";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
   home: { component: <Home /> },
+  graph: { component: <About /> },
   about: { component: <About /> },
-  "sys/uuAppWorkspace/initUve": { component: <InitAppWorkspace /> },
-  controlPanel: { component: <ControlPanel /> },
 };
 
 export const SpaAuthenticated = createVisualComponent({
@@ -59,7 +55,7 @@ export const SpaAuthenticated = createVisualComponent({
           topFixed="smart"
           bottom={<Bottom />}
           type={3}
-          displayedLanguages={["cs", "en"]}
+          displayedLanguages={["en"]}
           left={<Left />}
           leftWidth="!xs-300px !s-300px !m-288px !l-288px !xl-288px"
           leftFixed

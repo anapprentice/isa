@@ -22,13 +22,13 @@ const CLASS_NAMES = {
     max-width: 624px;
     margin: 0 auto;
     text-align: center;
-  
+
     ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `text-align: left;`)}
-  
+
     .uu5-bricks-header {
       margin-top: 8px;
     }
-    
+
     .plus4u5-bricks-user-photo {
       margin: 0 auto;
     }
@@ -55,8 +55,6 @@ export const Home = createVisualComponent({
     const attrs = UU5.Common.VisualComponent.getAttrs(props);
     return (
       <div {...attrs}>
-        <Plus4U5.App.ArtifactSetter territoryBaseUri="" artifactId="" />
-
         <UU5.Bricks.Row className={CLASS_NAMES.welcomeRow()}>
           <UU5.Bricks.Column colWidth="x-12 s-3">
             <Plus4U5.Bricks.UserPhoto width="100px" />
@@ -68,15 +66,9 @@ export const Home = createVisualComponent({
             </UU5.Common.Identity>
           </UU5.Bricks.Column>
         </UU5.Bricks.Row>
-        <WelcomeRow textPadding="14px" icon="mdi-human-greeting">
-          <UU5.Bricks.Lsi lsi={Lsi.auth.intro} />
-        </WelcomeRow>
-        <WelcomeRow textPadding="10px" icon="mdi-monitor">
-          <UU5.Bricks.Lsi lsi={Lsi.auth.clientSide} />
-        </WelcomeRow>
-        <WelcomeRow textPadding="8px" icon="mdi-server">
-          <UU5.Bricks.Lsi lsi={Lsi.auth.serverSide} />
-        </WelcomeRow>
+        <UU5.Bricks.Row className={CLASS_NAMES.welcomeRow()}>
+          {/*TODO: Content of welcome page*/}
+        </UU5.Bricks.Row>
       </div>
     );
     //@@viewOff:render
