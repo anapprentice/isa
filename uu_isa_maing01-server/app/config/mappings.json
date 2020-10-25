@@ -15,6 +15,21 @@
         "realization": "index.html",
         "httpMethod": "GET",
         "type": "UVE"
+      },
+      "booking/createMockData": {
+        "realization": "api/controllers/BookingController.createMockData",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "booking/getBookingCountStatistics": {
+        "realization": "api/controllers/BookingController.getBookingCountStatistics",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "booking/getAreaBookingTimeStatistics": {
+        "realization": "api/controllers/BookingController.getAreaBookingTimeStatistics",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

@@ -17,6 +17,18 @@
       "sys/uuAppWorkspace/initUve": {
         "sysStateList": ["created"],
         "profileList": ["Public", "AwidLicenseOwner"]
+      },
+      "booking/createMockData": {
+        "sysStateList": ["created"],
+        "profileList": ["Public"]
+      },
+      "booking/getBookingCountStatistics": {
+        "sysStateList": ["created"],
+        "profileList": ["Public"]
+      },
+      "booking/getAreaBookingTimeStatistics": {
+        "sysStateList": ["created"],
+        "profileList": ["Public"]
       }
     }
   }

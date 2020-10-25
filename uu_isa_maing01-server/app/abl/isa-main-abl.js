@@ -34,7 +34,7 @@ class IsaMainAbl {
     );
 
     // HDS 2
-    const schemas = ["isaMain"];
+    const schemas = ["booking"];
     let schemaCreateResults = schemas.map(async (schema) => {
       try {
         return await DaoFactory.getDao(schema).createSchema();
@@ -45,70 +45,70 @@ class IsaMainAbl {
     });
     await Promise.all(schemaCreateResults);
 
-    if (dtoIn.uuBtLocationUri) {
-      const baseUri = uri.getBaseUri();
-      const uuBtUriBuilder = UriBuilder.parse(dtoIn.uuBtLocationUri);
-      const location = uuBtUriBuilder.getParameters().id;
-      const uuBtBaseUri = uuBtUriBuilder.toUri().getBaseUri();
-
-      const createAwscDtoIn = {
-        name: "UuIsa",
-        typeCode: "uu-isa-maing01",
-        location: location,
-        uuAppWorkspaceUri: baseUri,
-      };
-
-      const awscCreateUri = uuBtUriBuilder.setUseCase("uuAwsc/create").toUri();
-      const appClientToken = await AppClientTokenService.createToken(uri, uuBtBaseUri);
-      const callOpts = AppClientTokenService.setToken({ session }, appClientToken);
-
-      // TODO HDS
-      let awscId;
-      try {
-        const awscDtoOut = await AppClient.post(awscCreateUri, createAwscDtoIn, callOpts);
-        awscId = awscDtoOut.id;
-      } catch (e) {
-        if (e.code.includes("applicationIsAlreadyConnected") && e.paramMap.id) {
-          logger.warn(`Awsc already exists id=${e.paramMap.id}.`, e);
-          awscId = e.paramMap.id;
-        } else {
-          throw new Errors.Init.CreateAwscFailed({ uuAppErrorMap }, { location: dtoIn.uuBtLocationUri }, e);
-        }
-      }
-
-      const artifactUri = uuBtUriBuilder.setUseCase(null).clearParameters().setParameter("id", awscId).toUri();
-
-      await UuAppWorkspace.connectArtifact(
-        baseUri,
-        {
-          artifactUri: artifactUri.toString(),
-          synchronizeArtifactBasicAttributes: false,
-        },
-        session
-      );
-    }
-
-    // HDS 3
-    if (dtoIn.uuAppProfileAuthorities) {
-      try {
-        await Profile.set(awid, "Authorities", dtoIn.uuAppProfileAuthorities);
-      } catch (e) {
-        if (e instanceof UuAppWorkspaceError) {
-          // A4
-          throw new Errors.Init.SysSetProfileFailed({ uuAppErrorMap }, { role: dtoIn.uuAppProfileAuthorities }, e);
-        }
-        throw e;
-      }
-    }
-
-    // HDS 4 - HDS N
-    // TODO Implement according to application needs...
-
-    // HDS N+1
-    const workspace = UuAppWorkspace.get(awid);
+    // if (dtoIn.uuBtLocationUri) {
+    //   const baseUri = uri.getBaseUri();
+    //   const uuBtUriBuilder = UriBuilder.parse(dtoIn.uuBtLocationUri);
+    //   const location = uuBtUriBuilder.getParameters().id;
+    //   const uuBtBaseUri = uuBtUriBuilder.toUri().getBaseUri();
+    //
+    //   const createAwscDtoIn = {
+    //     name: "UuIsa",
+    //     typeCode: "uu-isa-maing01",
+    //     location: location,
+    //     uuAppWorkspaceUri: baseUri,
+    //   };
+    //
+    //   const awscCreateUri = uuBtUriBuilder.setUseCase("uuAwsc/create").toUri();
+    //   const appClientToken = await AppClientTokenService.createToken(uri, uuBtBaseUri);
+    //   const callOpts = AppClientTokenService.setToken({ session }, appClientToken);
+    //
+    //   // TODO HDS
+    //   let awscId;
+    //   try {
+    //     const awscDtoOut = await AppClient.post(awscCreateUri, createAwscDtoIn, callOpts);
+    //     awscId = awscDtoOut.id;
+    //   } catch (e) {
+    //     if (e.code.includes("applicationIsAlreadyConnected") && e.paramMap.id) {
+    //       logger.warn(`Awsc already exists id=${e.paramMap.id}.`, e);
+    //       awscId = e.paramMap.id;
+    //     } else {
+    //       throw new Errors.Init.CreateAwscFailed({ uuAppErrorMap }, { location: dtoIn.uuBtLocationUri }, e);
+    //     }
+    //   }
+    //
+    //   const artifactUri = uuBtUriBuilder.setUseCase(null).clearParameters().setParameter("id", awscId).toUri();
+    //
+    //   await UuAppWorkspace.connectArtifact(
+    //     baseUri,
+    //     {
+    //       artifactUri: artifactUri.toString(),
+    //       synchronizeArtifactBasicAttributes: false,
+    //     },
+    //     session
+    //   );
+    // }
+    //
+    // // HDS 3
+    // if (dtoIn.uuAppProfileAuthorities) {
+    //   try {
+    //     await Profile.set(awid, "Authorities", dtoIn.uuAppProfileAuthorities);
+    //   } catch (e) {
+    //     if (e instanceof UuAppWorkspaceError) {
+    //       // A4
+    //       throw new Errors.Init.SysSetProfileFailed({ uuAppErrorMap }, { role: dtoIn.uuAppProfileAuthorities }, e);
+    //     }
+    //     throw e;
+    //   }
+    // }
+    //
+    // // HDS 4 - HDS N
+    // // TODO Implement according to application needs...
+    //
+    // // HDS N+1
+    // const workspace = UuAppWorkspace.get(awid);
 
     return {
-      ...workspace,
+      // ...workspace,
       uuAppErrorMap: uuAppErrorMap,
     };
   }

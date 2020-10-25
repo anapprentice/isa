@@ -6,6 +6,9 @@
       "schemaMap": {
         "isaMain": {
           "realization": "dao/IsaMainMongo"
+        },
+        "booking": {
+          "realization": "dao/bookingMongo"
         }
       }
     }
