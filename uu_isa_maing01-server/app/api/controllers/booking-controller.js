@@ -8,8 +8,8 @@ class BookingController {
   getBookingCountStatistics(ucEnv) {
     return BookingAbl.getBookingCountStatistics();
   }
-  getAreaBookingTimeStatistics(ucEnv) {
-    return BookingAbl.getAreaBookingTimeStatistics(ucEnv.getDtoIn());
+  getBookingTimeStatistics(ucEnv) {
+    return BookingAbl.getBookingTimeStatistics(ucEnv.getDtoIn());
   }
 }
 

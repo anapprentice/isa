@@ -60,11 +60,11 @@ class BookingAbl {
    * @param dtoIn
    * @returns {any}
    */
-  async getAreaBookingTimeStatistics(dtoIn) {
+  async getBookingTimeStatistics(dtoIn) {
     let datetimeFrom = new Date(dtoIn.datetimeFrom);
     let datetimeTo = new Date(dtoIn.datetimeTo);
 
-    let statistics = await this.dao.getAreaBookingTimeStatistics(
+    let statistics = await this.dao.getBookingTimeStatistics(
       datetimeFrom,
       datetimeTo,
       dtoIn.timeStep,

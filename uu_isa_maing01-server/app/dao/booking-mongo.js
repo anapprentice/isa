@@ -43,7 +43,7 @@ class BookingMongo extends UuObjectDao {
     ]);
   }
 
-  async getAreaBookingTimeStatistics(datetimeFrom, datetimeTo, timeStep, workplaceId) {
+  async getBookingTimeStatistics(datetimeFrom, datetimeTo, timeStep, workplaceId) {
     let boundaries = this._getTimeBoundaries(datetimeFrom, datetimeTo, timeStep);
 
     // TODO match by workpalceId if defined

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const getAreaBookingTimeStatisticsDtoInType = shape({
+const getBookingTimeStatisticsDtoInType = shape({
   datetimeFrom: date().isRequired(),
   datetimeTo: date().isRequired(),
   timeStep: integer().isRequired()
