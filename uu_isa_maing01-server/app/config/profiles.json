@@ -26,7 +26,7 @@
         "sysStateList": ["created"],
         "profileList": ["Public"]
       },
-      "booking/getAreaBookingTimeStatistics": {
+      "booking/getBookingTimeStatistics": {
         "sysStateList": ["created"],
         "profileList": ["Public"]
       }

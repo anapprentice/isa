@@ -43,7 +43,7 @@ class BookingMongo extends UuObjectDao {
     ]);
   }
 
-  async getAreaBookingTimeStatistics(datetimeFrom, datetimeTo, timeStep, workplaceId) {
+  async getBookingTimeStatistics(datetimeFrom, datetimeTo, timeStep, workplaceId) {
     let boundaries = this._getTimeBoundaries(datetimeFrom, datetimeTo, timeStep);
 
     // TODO match by workpalceId if defined
@@ -142,7 +142,7 @@ class BookingMongo extends UuObjectDao {
       {
         $project: {
           _id: 0,
-          time: { $add: [{ $multiply: [{ $hour: "$_id" }, 60] }, { $minute: "$_id" }] },
+          datetime: "$_id",
           startedBookings: { $sum: "$startedBookings" },
           finishedBookings: { $sum: "$finishedBookings" },
         },

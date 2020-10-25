@@ -9,6 +9,9 @@
         },
         "booking": {
           "realization": "dao/bookingMongo"
+        },
+        "workplace": {
+          "realization": "dao/workplaceMongo"
         }
       }
     }
