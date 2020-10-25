@@ -1,13 +1,13 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent, useEffect, useRef, useState } from "uu5g04-hooks";
-import Plus4U5 from "uu_plus4u5g01";
+import { createVisualComponent, useDataList } from "uu5g04-hooks";
 import "uu_plus4u5g01-bricks";
 import "uu5amchartsg01";
+import Calls from "../calls";
+import GraphBookingStats from "../bricks/graph-booking-stats";
 
 import Config from "./config/config.js";
-import Lsi from "../config/lsi.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -17,21 +17,17 @@ const STATICS = {
 };
 
 const CLASS_NAMES = {
-  welcomeRow: () => Config.Css.css`
+  heading: () => Config.Css.css`
     padding: 56px 0 20px;
     max-width: 624px;
     margin: 0 auto;
     text-align: center;
-
-    ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `text-align: left;`)}
-
-    .uu5-bricks-header {
-      margin-top: 8px;
-    }
-
-    .plus4u5-bricks-user-photo {
-      margin: 0 auto;
-    }
+    font-size: 24px;
+    font-weight: bold;
+  `,
+  graph: () => Config.Css.css`
+    width: 75%;
+    margin: 0 auto;
   `,
 };
 
@@ -45,74 +41,41 @@ export const Home = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
-    //@@viewOn:private
-
-    //@@viewOff:private
-
     //@@viewOn:interface
     //@@viewOff:interface
+
+    //@@viewOn:hooks
+    const dataListResult = useDataList({
+      handlerMap: {
+        load: getBookingCountStatistics,
+      },
+    });
+
+    function getBookingCountStatistics() {
+      return Calls.getBookingCountStatistics();
+    }
+
+    const { state, data, handlerMap } = dataListResult;
+    //@@viewOff:hooks
+
+    //@@viewOn:private
+    //@@viewOff:private
 
     //@@viewOn:render
     const attrs = UU5.Common.VisualComponent.getAttrs(props);
 
-    return (
-      <div {...attrs}>
-        <UU5.AmCharts.Chart
-          type="PieChart"
-          config={{
-            series: [
-              {
-                type: "PieSeries",
-                dataFields: {
-                  value: "litres",
-                  category: "country",
-                },
-              },
-            ],
-            data: [
-              {
-                country: "Lithuania",
-                litres: 501.9,
-              },
-              {
-                country: "Czech Republic",
-                litres: 301.9,
-              },
-              {
-                country: "Ireland",
-                litres: 201.1,
-              },
-              {
-                country: "Germany",
-                litres: 165.8,
-              },
-              {
-                country: "Australia",
-                litres: 139.9,
-              },
-              {
-                country: "Austria",
-                litres: 128.3,
-              },
-              {
-                country: "UK",
-                litres: 99,
-              },
-              {
-                country: "Belgium",
-                litres: 60,
-              },
-              {
-                country: "The Netherlands",
-                litres: 50,
-              },
-            ],
-            legend: {},
-          }}
-          height="512px"
-        />
-      </div>
-    );
+    switch (state) {
+      case "pending":
+      case "pendingNoData":
+        return <UU5.Bricks.Loading />;
+      case "ready":
+        return (
+          <div {...attrs}>
+            <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #1 - booking count statistics</UU5.Bricks.Row>
+            <GraphBookingStats data={data} />
+          </div>
+        );
+    }
     //@@viewOff:render
   },
 });

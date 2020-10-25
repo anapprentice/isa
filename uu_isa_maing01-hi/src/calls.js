@@ -13,6 +13,16 @@ let Calls = {
     return response.data;
   },
 
+  getBookingCountStatistics() {
+    let commandUri = Calls.getCommandUri("booking/getBookingCountStatistics");
+    return Calls.call("get", commandUri);
+  },
+
+  getBookingTimeStatistics(dtoIn) {
+    let commandUri = Calls.getCommandUri("booking/getBookingTimeStatistics");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);
