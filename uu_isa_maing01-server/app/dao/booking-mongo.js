@@ -142,7 +142,7 @@ class BookingMongo extends UuObjectDao {
       {
         $project: {
           _id: 0,
-          time: "$_id",
+          datetime: "$_id",
           startedBookings: { $sum: "$startedBookings" },
           finishedBookings: { $sum: "$finishedBookings" },
         },
