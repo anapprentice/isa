@@ -9,7 +9,7 @@ class BookingController {
     return BookingAbl.getBookingCountStatistics();
   }
   getAreaBookingTimeStatistics(ucEnv) {
-    return BookingAbl.getAreaBookingTimeStatistics();
+    return BookingAbl.getAreaBookingTimeStatistics(ucEnv.getDtoIn());
   }
 }
 

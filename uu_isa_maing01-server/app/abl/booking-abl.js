@@ -1,72 +1,75 @@
 "use strict";
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-const { ValidationHelper } = require("uu_appg01_server").AppServer;
 
-const MOCKED_BOOKINGS = [
-  {
-    workplaceId: 1,
-    duration: 60,
-    datetimeFrom: new Date("2020-10-15T04:00:00.000Z"),
-    datetimeTo: new Date("2020-10-15T06:00:00.000Z"),
-  },
-  {
-    workplaceId: 1,
-    duration: 120,
-    datetimeFrom: new Date("2020-10-15T04:00:00.000Z"),
-    datetimeTo: new Date("2020-10-15T06:00:00.000Z"),
-  },
-  {
-    workplaceId: 1,
-    duration: 120,
-    datetimeFrom: new Date("2020-10-15T04:00:00.000Z"),
-    datetimeTo: new Date("2020-10-15T06:00:00.000Z"),
-  },
-  {
-    workplaceId: 2,
-    duration: 60,
-    datetimeFrom: new Date("2020-10-15T04:00:00.000Z"),
-    datetimeTo: new Date("2020-10-15T06:00:00.000Z"),
-  },
-  {
-    workplaceId: 3,
-    duration: 60,
-    datetimeFrom: new Date("2020-10-15T04:00:00.000Z"),
-    datetimeTo: new Date("2020-10-15T06:00:00.000Z"),
-  },
-  {
-    workplaceId: 3,
-    duration: 60,
-    datetimeFrom: new Date("2020-10-15T04:00:00.000Z"),
-    datetimeTo: new Date("2020-10-15T06:00:00.000Z"),
-  },
-];
+const Mock = require("./mock");
 
 class BookingAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao("booking");
+    this.workplaceDao = DaoFactory.getDao("workplace");
   }
 
+  /**
+   * This method creates data structure for demo
+   * @returns {workplaces, bookings}
+   */
   async createMockData() {
-    let bookings = await this.dao.insert(MOCKED_BOOKINGS);
+    // 1. create workplaces
+    let workplaces = await this.workplaceDao.insert(Mock.workplaces);
 
-    return { bookings };
+    // 2. map workplace ids to bookings
+    let bookings = Mock.bookings.map((booking) => {
+      return {
+        workplaceId: workplaces[booking.workplace]._id,
+        duration: booking.duration,
+        datetimeFrom: booking.datetimeFrom,
+        datetimeTo: booking.datetimeTo,
+      };
+    });
+
+    // 3. create bookings
+    await this.dao.insert(bookings);
+
+    // 4. return
+    return { workplaces, bookings };
   }
 
+  /**
+   *
+   * @returns {any}
+   */
   async getBookingCountStatistics() {
-    // TODO: create workplace collection and load additional data from it
     let statistics = await this.dao.getBookingCountStatistics();
+    let workplaceMap = {};
+
+    if (statistics.length) {
+      let bookingWorkplaces = await this.workplaceDao.listByWorkplaceIdList(statistics.map((stat) => stat.workplaceId));
+      bookingWorkplaces.itemList.forEach((workplace) => (workplaceMap[workplace.id.toString()] = workplace));
+      statistics = statistics.map((booking) => {
+        return { bookingCount: booking.bookingCount, workplace: workplaceMap[booking.workplaceId].name };
+      });
+    }
 
     return { statistics };
   }
 
-  async getAreaBookingTimeStatistics() {
-    // TODO: take datetimeFrom, datetimeTo from dtoIn
-    let datetimeFrom = new Date("2020-10-15T03:00:00.000Z");
-    let datetimeTo = new Date("2020-10-15T07:00:00.000Z");
+  /**
+   *
+   * @param dtoIn
+   * @returns {any}
+   */
+  async getAreaBookingTimeStatistics(dtoIn) {
+    let datetimeFrom = new Date(dtoIn.datetimeFrom);
+    let datetimeTo = new Date(dtoIn.datetimeTo);
 
-    let statistics = await this.dao.getAreaBookingTimeStatistics(datetimeFrom, datetimeTo, 60);
+    let statistics = await this.dao.getAreaBookingTimeStatistics(
+      datetimeFrom,
+      datetimeTo,
+      dtoIn.timeStep,
+      dtoIn.workplaceId
+    );
 
     return { statistics };
   }
