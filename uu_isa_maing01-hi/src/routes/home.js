@@ -49,16 +49,11 @@ export const Home = createVisualComponent({
     const dataListResult = useDataObject({
       handlerMap: {
         load: getBookingCountStatistics,
-        loadTimes: getBookingTimeStatistics,
       },
     });
 
     function getBookingCountStatistics() {
       return Calls.getBookingCountStatistics();
-    }
-
-    function getBookingTimeStatistics(dtoInData) {
-      return Calls.getBookingTimeStatistics(dtoInData);
     }
 
     const { state, data } = dataListResult;
@@ -79,7 +74,7 @@ export const Home = createVisualComponent({
           <div {...attrs}>
             <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #1 - booking count statistics</UU5.Bricks.Row>
             <GraphBookingStats data={data.statistics} />
-            <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart # - booking statistics by time</UU5.Bricks.Row>
+            <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #2 - booking statistics by time</UU5.Bricks.Row>
             <GraphBookingTimeStats data={null} />
           </div>
         );

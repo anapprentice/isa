@@ -34,35 +34,35 @@ export const About = {
   },
   leadingAuthors: [
     {
-      name: "Some Name",
-      uuIdentity: "4-4-1",
+      name: "Patrik Bašista",
+      uuIdentity: "22-8939-1",
       role: {
-        en: "Chief Business Architect & Stakeholder",
+        en: "Backend development",
       },
     },
     {
-      name: "Other Name",
-      uuIdentity: "4-4-1",
+      name: "Maroš Jakubčo",
+      uuIdentity: "22-9196-1",
       role: {
-        en: "Head of Development",
+        en: "Frontend development",
+      },
+    },
+    {
+      name: "Bernard Lukáč",
+      uuIdentity: "22-9056-1",
+      role: {
+        en: "NoSql specialist presenter",
+      },
+    },
+    {
+      name: "Anton Kivader",
+      uuIdentity: "22-9027-1",
+      role: {
+        en: "Sql and NoSql difference specialist",
       },
     },
   ],
   otherAuthors: [
-    {
-      name: "Your Name",
-      uuIdentity: "4-4-1",
-      role: {
-        en: "Developer",
-      },
-    },
-    {
-      name: "More Names",
-      uuIdentity: "4-4-1",
-      role: {
-        en: "Developer",
-      },
-    },
   ],
   usedTechnologies: {
     technologies: {
