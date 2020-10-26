@@ -8,68 +8,55 @@ class BookingAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao("booking");
-    this.workplaceDao = DaoFactory.getDao("workplace");
+    this.areaDao = DaoFactory.getDao("area");
   }
 
   /**
    * This method creates data structure for demo
-   * @returns {workplaces, bookings}
+   * @returns {areas, bookings}
    */
   async createMockData() {
-    // 1. create workplaces
-    let workplaces = await this.workplaceDao.insert(Mock.workplaces);
+    let areas = await this.areaDao.insert(Mock.areas);
+    let bookings = await this.dao.insert(Mock.bookings);
 
-    // 2. map workplace ids to bookings
-    let bookings = Mock.bookings.map((booking) => {
-      return {
-        workplaceId: workplaces[booking.workplace]._id,
-        duration: booking.duration,
-        datetimeFrom: booking.datetimeFrom,
-        datetimeTo: booking.datetimeTo,
-      };
-    });
-
-    // 3. create bookings
-    await this.dao.insert(bookings);
-
-    // 4. return
-    return { workplaces, bookings };
+    return { areas, bookings };
   }
 
   /**
-   *
-   * @returns {any}
+   * This method returns bookingCount for every workplace
+   * @returns {statistics}
    */
   async getBookingCountStatistics() {
+    // List statistics
     let statistics = await this.dao.getBookingCountStatistics();
-    let workplaceMap = {};
 
-    if (statistics.length) {
-      let bookingWorkplaces = await this.workplaceDao.listByWorkplaceIdList(statistics.map((stat) => stat.workplaceId));
-      bookingWorkplaces.itemList.forEach((workplace) => (workplaceMap[workplace.id.toString()] = workplace));
-      statistics = statistics.map((booking) => {
-        return { bookingCount: booking.bookingCount, workplace: workplaceMap[booking.workplaceId].name };
-      });
-    }
+    // List all workplaces associated with statistics
+    let workplacesIdList = statistics.map((stat) => stat.workplaceId);
+    let bookingWorkplaces = await this.areaDao.listByWorkplaceIdList(workplacesIdList);
+
+    // Create areaMap to optimize searching
+    let areaMap = {};
+    bookingWorkplaces.itemList.forEach((area) => (areaMap[area.id.toString()] = area));
+
+    // Map booking info to statistics
+    statistics = statistics.map((booking) => {
+      return { bookingCount: booking.bookingCount, area: areaMap[booking.workplaceId.toString()].name };
+    });
 
     return { statistics };
   }
 
   /**
-   *
+   * This method returns data for histogram (for every timeStep within datetimeFrom and datetimeTo returns info
+   * about started and finished statistics)
    * @param dtoIn
-   * @returns {any}
+   * @returns {statistics}
    */
   async getBookingTimeStatistics(dtoIn) {
     let datetimeFrom = new Date(dtoIn.datetimeFrom);
     let datetimeTo = new Date(dtoIn.datetimeTo);
 
-    let statistics = await this.dao.getBookingTimeStatistics(
-      datetimeFrom,
-      datetimeTo,
-      dtoIn.timeStep,
-      dtoIn.workplaceId
-    );
+    let statistics = await this.dao.getBookingTimeStatistics(datetimeFrom, datetimeTo, dtoIn.timeStep);
 
     return { statistics };
   }

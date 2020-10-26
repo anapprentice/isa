@@ -1,4 +1,5 @@
 "use strict";
+
 const { UuObjectDao } = require("uu_appg01_server").ObjectStore;
 const { DbConnection } = require("uu_appg01_datastore");
 const ObjectId = require("mongodb").ObjectID;
@@ -8,24 +9,12 @@ class BookingMongo extends UuObjectDao {
     await super.createIndex({ awid: 1 }, { unique: true });
   }
 
-  async create(uuObject) {
-    return await super.insertOne(uuObject);
-  }
-
   async insert(uuObjectList) {
     let db = await DbConnection.get(this.customUri);
     return await db.collection("booking").insert(uuObjectList);
   }
 
-  async get(awid, id) {
-    let filter = {
-      awid: awid,
-      id: id,
-    };
-    return await super.findOne(filter);
-  }
-
-  async getBookingCountStatistics(awid, id) {
+  async getBookingCountStatistics() {
     return await super.aggregate([
       {
         $group: {
@@ -43,7 +32,7 @@ class BookingMongo extends UuObjectDao {
     ]);
   }
 
-  async getBookingTimeStatistics(datetimeFrom, datetimeTo, timeStep, workplaceId) {
+  async getBookingTimeStatistics(datetimeFrom, datetimeTo, timeStep) {
     let boundaries = this._getTimeBoundaries(datetimeFrom, datetimeTo, timeStep);
 
     // TODO match by workpalceId if defined
@@ -148,22 +137,6 @@ class BookingMongo extends UuObjectDao {
         },
       },
     ]);
-  }
-
-  async update(uuObject) {
-    let filter = {
-      awid: uuObject.awid,
-      id: uuObject.id,
-    };
-    return await super.findOneAndUpdate(filter, uuObject, "NONE");
-  }
-
-  async remove(uuObject) {
-    let filter = {
-      awid: uuObject.awid,
-      id: uuObject.id,
-    };
-    return await super.deleteOne(filter);
   }
 
   _getTimeBoundaries(datetimeFrom, datetimeTo, timeStep) {
