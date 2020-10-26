@@ -52,7 +52,7 @@ class BookingAbl {
       });
     }
 
-    return statistics;
+    return { statistics };
   }
 
   /**
