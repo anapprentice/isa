@@ -27,8 +27,9 @@ class BookingAbl {
    * @returns {statistics}
    */
   async getBookingCountStatistics() {
+    // TODO: LOOKUP
     // List statistics
-    let statistics = await this.dao.getBookingCountStatistics();
+    let statistics = await this.dao.getWorkplacesBookingCount();
 
     // List all workplaces associated with statistics
     let workplacesIdList = statistics.map((stat) => stat.workplaceId);
@@ -57,6 +58,12 @@ class BookingAbl {
     let datetimeTo = new Date(dtoIn.datetimeTo);
 
     let statistics = await this.dao.getBookingTimeStatistics(datetimeFrom, datetimeTo, dtoIn.timeStep);
+
+    return { statistics };
+  }
+
+  async getAreaBookingStatistics(dtoIn) {
+    let statistics = await this.dao.listAreaBookingStatistics(dtoIn.id);
 
     return { statistics };
   }

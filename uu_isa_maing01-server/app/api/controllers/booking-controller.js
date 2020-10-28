@@ -11,6 +11,9 @@ class BookingController {
   getBookingTimeStatistics(ucEnv) {
     return BookingAbl.getBookingTimeStatistics(ucEnv.getDtoIn());
   }
+  getAreaBookingStatistics(ucEnv) {
+    return BookingAbl.getAreaBookingStatistics(ucEnv.getDtoIn());
+  }
 }
 
 module.exports = new BookingController();

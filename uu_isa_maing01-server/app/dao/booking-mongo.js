@@ -14,11 +14,13 @@ class BookingMongo extends UuObjectDao {
     return await db.collection("booking").insert(uuObjectList);
   }
 
-  async getBookingCountStatistics() {
+  async getWorkplacesBookingCount() {
     return await super.aggregate([
+      { $unwind: "$areaList" },
+      { $match: { "areaList.areaType": "workplace" } },
       {
         $group: {
-          _id: "$workplaceId",
+          _id: "$areaList.id",
           bookingCount: { $sum: 1 },
         },
       },
@@ -152,6 +154,40 @@ class BookingMongo extends UuObjectDao {
     }
 
     return boundaries;
+  }
+
+  async listAreaBookingStatistics(areaId) {
+    let result = await super.aggregate([
+      { $match: { "areaList.id": ObjectId(areaId) } },
+      { $unwind: "$areaList" },
+      { $match: { "areaList.id": ObjectId(areaId) } },
+      {
+        $group: {
+          _id: "$areaList.id", // group areas in areaList by id
+          bookingCount: { $sum: 1 }, // count bookings for every area
+          totalBookingDuration: { $sum: "$duration" }, // count totalBookingDuration for every area
+        },
+      },
+      {
+        $group: {
+          _id: "$_id", // group by _id of previous grouping (no collisions)
+          bookingCount: { $first: "$bookingCount" }, // take first bookingCount since it was counted in previous grouping
+          totalBookingDuration: { $first: "$totalBookingDuration" }, // take first totalBookingDuration since it was counted in previous grouping
+          workplaceWithBookingCount: { $sum: 1 }, // previous grouping grouped areas by id so this sum should return number of areas (workplaces) with booking
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: "$_id",
+          bookingCount: 1,
+          totalBookingDuration: 1,
+          workplaceWithBookingCount: 1,
+        },
+      },
+    ]);
+
+    return result[0];
   }
 }
 

@@ -30,6 +30,16 @@
         "realization": "api/controllers/BookingController.getBookingTimeStatistics",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "area/getAreaBookingStatistics": {
+        "realization": "api/controllers/BookingController.getAreaBookingStatistics",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "area/getAreaStructure": {
+        "realization": "api/controllers/AreaController.getAreaStructure",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

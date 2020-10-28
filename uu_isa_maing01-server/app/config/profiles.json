@@ -29,6 +29,14 @@
       "booking/getBookingTimeStatistics": {
         "sysStateList": ["created"],
         "profileList": ["Public"]
+      },
+      "area/getAreaBookingStatistics": {
+        "sysStateList": ["created"],
+        "profileList": ["Public"]
+      },
+      "area/getAreaStructure": {
+        "sysStateList": ["created"],
+        "profileList": ["Public"]
       }
     }
   }
