@@ -31,8 +31,8 @@ export const GraphBookingTimeStats = createComponent({
     //@@viewOn:hooks
     const dataObjectResult = useDataObject({
       initialDtoIn: {
-        dateTimeFrom: "2020-10-15T04:00:00.000+00:00",
-        dateTimeTo: "2020-10-15T05:00:00.000+00:00",
+        datetimeFrom: "2020-10-15T00:00:00.000Z",
+        datetimeTo: "2020-10-15T23:59:99.999Z",
         timeStep: 30,
       },
       handlerMap: {
