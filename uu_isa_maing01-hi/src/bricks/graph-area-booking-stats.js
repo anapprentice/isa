@@ -7,11 +7,11 @@ import Calls from "../calls";
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "GraphBookingStats",
+  displayName: Config.TAG + "GraphAreaBookingStats",
   //@@viewOff:statics
 };
 
-export const GraphBookingStats = createComponent({
+export const GraphAreaBookingStats = createComponent({
   ...STATICS,
 
   //@@viewOn:propTypes
@@ -32,24 +32,25 @@ export const GraphBookingStats = createComponent({
     //@@viewOn:hooks
     const dataListResult = useDataObject({
       handlerMap: {
-        load: getBookingCountStatistics,
+        load: getAreaBookingStatistics,
       },
     });
 
-    function getBookingCountStatistics() {
-      return Calls.getBookingCountStatistics({});
+    function getAreaBookingStatistics() {
+      return Calls.getAreaBookingStatistics();
     }
 
     const { state, data } = dataListResult;
-
     //@@viewOff:hooks
 
     //@@viewOn:render
+    let graphData = { bookingCount: 1, workplace: "Nothing" };
     switch (state) {
       case "pending":
       case "pendingNoData":
         return <UU5.Bricks.Loading />;
       case "ready":
+        console.log(data);
         return (
           <div>
             <UU5.AmCharts.Chart
@@ -64,7 +65,7 @@ export const GraphBookingStats = createComponent({
                     },
                   },
                 ],
-                data: data.statistics,
+                data: graphData,
                 legend: {},
               }}
               height="512px"
@@ -76,4 +77,4 @@ export const GraphBookingStats = createComponent({
   },
 });
 
-export default GraphBookingStats;
+export default GraphAreaBookingStats;

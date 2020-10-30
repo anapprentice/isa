@@ -23,6 +23,11 @@ let Calls = {
     return Calls.call("get", commandUri, dtoIn);
   },
 
+  getAreaBookingStatistics(dtoIn) {
+    let commandUri = Calls.getCommandUri("area/getAreaBookingStatistics");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);

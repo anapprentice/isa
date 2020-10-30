@@ -3,7 +3,6 @@ import UU5 from "uu5g04";
 import { createComponent, useDataObject } from "uu5g04-hooks";
 import Config from "./config/config";
 import Calls from "../calls";
-import GraphBookingStats from "./graph-booking-stats";
 //@@viewOff:imports
 
 const STATICS = {
@@ -23,55 +22,96 @@ export const GraphBookingTimeStats = createComponent({
   defaultProps: {},
   //@@viewOff:defaultProps
 
-  render(props) {
+  render() {
     //@@viewOn:private
 
     //@@viewOff:private
 
     //@@viewOn:hooks
-    const dataObjectResult = useDataObject({
-      initialDtoIn: {
-        datetimeFrom: "2020-10-15T00:00:00.000Z",
-        datetimeTo: "2020-10-15T23:59:99.999Z",
-        timeStep: 30,
-      },
+    const dataListResult = useDataObject({
       handlerMap: {
         load: getBookingTimeStatistics,
       },
     });
 
-    function getBookingTimeStatistics(dtoInData) {
-      return Calls.getBookingTimeStatistics(dtoInData);
+    function getBookingTimeStatistics() {
+      let dtoIn = {
+        datetimeFrom: "2020-10-15T04:00:00.000+00:00",
+        datetimeTo: "2020-10-15T08:00:00.000+00:00",
+        timeStep: 30,
+      };
+      return Calls.getBookingTimeStatistics(dtoIn);
     }
 
-    const { state, data } = dataObjectResult;
+    const { state, data } = dataListResult;
     //@@viewOff:hooks
 
     //@@viewOn:interface
     //@@viewOff:interface
 
     //@@viewOn:render
-    const className = Config.Css.css``;
-    console.log(data);
-    // switch (state) {
-    //   case "pending":
-    //   case "pendingNoData":
-    //     return <UU5.Bricks.Loading />;
-    //   case "ready":
-    //     return (
-    //       <div {...attrs}>
-    //         <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #1 - booking count statistics</UU5.Bricks.Row>
-    //         <GraphBookingStats data={data.statistics} />
-    //         <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #2 - booking statistics by time</UU5.Bricks.Row>
-    //         <GraphBookingTimeStats data={null} />
-    //       </div>
-    //     );
-    //
-    //   case "default":
-    //
-    // }
-
-    return "BLYAAAT";
+    let datas = [];
+    switch (state) {
+      case "pending":
+      case "pendingNoData":
+        return <UU5.Bricks.Loading />;
+      default:
+        console.log(data);
+        for (let handleData of data.statistics) {
+          let date = new Date(handleData.datetime);
+          let datetime =
+            // date.getFullYear() +
+            // `-` +
+            // date.getMonth() +
+            // `-` +
+            // date.getDate() +
+            // ` ` +
+            `0` + date.getHours() + `:` + date.getMinutes() + `0`;
+          datas.push({ startedBookings: handleData.startedBookings, datetime: datetime });
+        }
+        console.log(datas);
+        return (
+          <div>
+            <UU5.AmCharts.Chart
+              type="XYChart"
+              config={{
+                config: {
+                  series: [
+                    {
+                      id: "serie1",
+                      type: "LineSeries",
+                      dataFields: {
+                        valueY: "startedBookings",
+                        dateX: "datetime",
+                      },
+                      strokeWidth: 2,
+                      fillOpacity: 0.5,
+                    },
+                  ],
+                  xAxes: [
+                    {
+                      type: "DateAxis",
+                      dateFormatter: {
+                        dateFormat: "HH:mm",
+                      },
+                    },
+                  ],
+                  yAxes: [
+                    {
+                      type: "ValueAxis",
+                      dataFields: {
+                        category: "time",
+                      },
+                    },
+                  ],
+                  data: datas,
+                },
+              }}
+              height="512px"
+            />
+          </div>
+        );
+    }
     //@@viewOff:render
   },
 });

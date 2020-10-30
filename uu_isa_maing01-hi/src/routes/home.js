@@ -1,12 +1,12 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent, useDataObject } from "uu5g04-hooks";
+import { createVisualComponent } from "uu5g04-hooks";
 import "uu_plus4u5g01-bricks";
 import "uu5amchartsg01";
-import Calls from "../calls";
 import GraphBookingStats from "../bricks/graph-booking-stats";
 import GraphBookingTimeStats from "../bricks/graph-booking-time-stats";
+import GraphAreaBookingStats from "../bricks/graph-area-booking-stats";
 
 import Config from "./config/config.js";
 //@@viewOff:imports
@@ -46,17 +46,6 @@ export const Home = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:hooks
-    const dataListResult = useDataObject({
-      handlerMap: {
-        load: getBookingCountStatistics,
-      },
-    });
-
-    function getBookingCountStatistics() {
-      return Calls.getBookingCountStatistics();
-    }
-
-    const { state, data } = dataListResult;
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -65,22 +54,18 @@ export const Home = createVisualComponent({
     //@@viewOn:render
     const attrs = UU5.Common.VisualComponent.getAttrs(props);
 
-    switch (state) {
-      case "pending":
-      case "pendingNoData":
-        return <UU5.Bricks.Loading />;
-      case "ready":
-        return (
-          <div {...attrs}>
-            <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #1 - booking count statistics</UU5.Bricks.Row>
-            <GraphBookingStats data={data.statistics} />
-            <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #2 - booking statistics by time</UU5.Bricks.Row>
-            <GraphBookingTimeStats data={null} />
-          </div>
-        );
-    }
-    //@@viewOff:render
+    return (
+      <div {...attrs}>
+        <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #1 - booking count statistics</UU5.Bricks.Row>
+        <GraphBookingStats />
+        <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #2 - booking time stats</UU5.Bricks.Row>
+        <GraphBookingTimeStats />
+        <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Chart #3 - area booking stats</UU5.Bricks.Row>
+        <GraphAreaBookingStats />
+      </div>
+    );
   },
+  //@@viewOff:render
 });
 
 export default Home;

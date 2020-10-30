@@ -36,30 +36,22 @@ export const About = {
     {
       name: "Patrik Bašista",
       uuIdentity: "22-8939-1",
-      role: {
-        en: "Backend development",
-      },
+      role: {},
     },
     {
       name: "Maroš Jakubčo",
       uuIdentity: "22-9196-1",
-      role: {
-        en: "Frontend development",
-      },
+      role: {},
     },
     {
       name: "Bernard Lukáč",
       uuIdentity: "22-9056-1",
-      role: {
-        en: "NoSql specialist presenter",
-      },
+      role: {},
     },
     {
       name: "Anton Kivader",
       uuIdentity: "22-9027-1",
-      role: {
-        en: "Sql and NoSql difference specialist",
-      },
+      role: {},
     },
   ],
   otherAuthors: [
