@@ -36,9 +36,9 @@ export const GraphBookingTimeStats = createComponent({
 
     function getBookingTimeStatistics() {
       let dtoIn = {
-        datetimeFrom: "2020-10-15T04:00:00.000+00:00",
-        datetimeTo: "2020-10-15T08:00:00.000+00:00",
-        timeStep: 30,
+        datetimeFrom: "2020-10-15T00:00:00.000Z",
+        datetimeTo: "2020-10-15T23:59:59.999Z",
+        timeStep: 60,
       };
       return Calls.getBookingTimeStatistics(dtoIn);
     }

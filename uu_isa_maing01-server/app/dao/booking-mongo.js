@@ -142,6 +142,7 @@ class BookingMongo extends UuObjectDao {
   }
 
   _getTimeBoundaries(datetimeFrom, datetimeTo, timeStep) {
+    timeStep = parseInt(timeStep);
     const dateDiffInMinutes = (datetimeTo - datetimeFrom) / 60000;
 
     let boundaries = [];
