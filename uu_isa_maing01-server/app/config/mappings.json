@@ -40,6 +40,11 @@
         "realization": "api/controllers/AreaController.getAreaStructure",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "area/list": {
+        "realization": "api/controllers/AreaController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

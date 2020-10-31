@@ -37,6 +37,10 @@
       "area/getAreaStructure": {
         "sysStateList": ["created"],
         "profileList": ["Public"]
+      },
+      "area/list": {
+        "sysStateList": ["created"],
+        "profileList": ["Public"]
       }
     }
   }

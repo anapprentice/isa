@@ -13,6 +13,10 @@ class AreaMongo extends UuObjectDao {
     return result.ops;
   }
 
+  async list(pageInfo) {
+    return await super.find({}, pageInfo);
+  }
+
   async listByWorkplaceIdList(areaIdList, pageInfo = {}) {
     // areaIdList = areaIdList && areaIdList.map(areaId => ObjectId(areaId));
     return await super.find({ id: { $in: areaIdList } }, pageInfo);

@@ -17,6 +17,12 @@ class AreaAbl {
 
     return { areaStructure };
   }
+
+  async list() {
+    let areaStructure = await this.dao.list();
+
+    return { areaStructure };
+  }
 }
 
 module.exports = new AreaAbl();
