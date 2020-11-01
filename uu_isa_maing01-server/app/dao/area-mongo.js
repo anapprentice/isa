@@ -4,7 +4,9 @@ const { DbConnection } = require("uu_appg01_datastore");
 const ObjectId = require("mongodb").ObjectID;
 
 class AreaMongo extends UuObjectDao {
-  async createSchema() {}
+  async createSchema() {
+    await super.createIndex({ parentArea: 1 });
+  }
 
   async insert(uuObjectList) {
     let db = await DbConnection.get(this.customUri);
