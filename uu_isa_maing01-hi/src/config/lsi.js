@@ -6,8 +6,12 @@ const Lsi = {
 
   left: {
     home: {
-      cs: "Vítejte",
-      en: "Welcome",
+      cs: "Grafy",
+      en: "Charts",
+    },
+    table: {
+      cs: "Tabulky",
+      en: "Tables",
     },
     about: {
       cs: "O aplikaci",

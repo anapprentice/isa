@@ -32,14 +32,14 @@ export const GraphBookingTimeStats = createComponent({
       handlerMap: {
         load: getBookingTimeStatistics,
       },
-    });
-
-    function getBookingTimeStatistics() {
-      let dtoIn = {
+      initialDtoIn: {
         datetimeFrom: "2020-10-15T00:00:00.000Z",
         datetimeTo: "2020-10-15T23:59:59.999Z",
         timeStep: 60,
-      };
+      },
+    });
+
+    function getBookingTimeStatistics(dtoIn) {
       return Calls.getBookingTimeStatistics(dtoIn);
     }
 
@@ -55,7 +55,7 @@ export const GraphBookingTimeStats = createComponent({
       case "pending":
       case "pendingNoData":
         return <UU5.Bricks.Loading />;
-      default:
+      case "ready":
         console.log(data);
         for (let handleData of data.statistics) {
           let date = new Date(handleData.datetime);
@@ -90,17 +90,17 @@ export const GraphBookingTimeStats = createComponent({
                   ],
                   xAxes: [
                     {
-                      type: "DateAxis",
-                      dateFormatter: {
-                        dateFormat: "HH:mm",
+                      type: "ValueAxis",
+                      dataFields: {
+                        category: "datetime",
                       },
                     },
                   ],
                   yAxes: [
                     {
-                      type: "ValueAxis",
+                      type: "CategoryAxis",
                       dataFields: {
-                        category: "time",
+                        category: "startedBookings",
                       },
                     },
                   ],
