@@ -61,7 +61,7 @@ export const GraphBookingStats = createComponent({
                     type: "PieSeries",
                     dataFields: {
                       value: "bookingCount",
-                      category: "workplace",
+                      category: "area",
                     },
                   },
                 ],
