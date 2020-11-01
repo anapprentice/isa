@@ -58,7 +58,6 @@ class BookingAbl {
     let datetimeTo = new Date(dtoIn.datetimeTo);
 
     let statistics = await this.dao.getBookingTimeStatistics(datetimeFrom, datetimeTo, dtoIn.timeStep);
-
     return { statistics };
   }
 

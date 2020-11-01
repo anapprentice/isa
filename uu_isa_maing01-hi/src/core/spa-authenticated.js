@@ -17,12 +17,14 @@ const STATICS = {
 };
 const Home = UU5.Common.Component.lazy(() => import("../routes/home"));
 const About = UU5.Common.Component.lazy(() => import("../routes/about"));
+const Table = UU5.Common.Component.lazy(() => import("../routes/table"));
+
 
 const DEFAULT_USE_CASE = "home";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
   home: { component: <Home /> },
-  graph: { component: <About /> },
+  table: { component: <Table /> },
   about: { component: <About /> },
 };
 

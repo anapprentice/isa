@@ -28,6 +28,11 @@ let Calls = {
     return Calls.call("get", commandUri, dtoIn);
   },
 
+  areaList() {
+    let commandUri = Calls.getCommandUri("area/list");
+    return Calls.call("get", commandUri);
+  },
+
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);

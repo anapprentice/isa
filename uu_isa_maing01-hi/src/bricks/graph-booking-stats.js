@@ -37,7 +37,7 @@ export const GraphBookingStats = createComponent({
     });
 
     function getBookingCountStatistics() {
-      return Calls.getBookingCountStatistics({});
+      return Calls.getBookingCountStatistics();
     }
 
     const { state, data } = dataListResult;
@@ -48,6 +48,7 @@ export const GraphBookingStats = createComponent({
     switch (state) {
       case "pending":
       case "pendingNoData":
+      default:
         return <UU5.Bricks.Loading />;
       case "ready":
         return (
