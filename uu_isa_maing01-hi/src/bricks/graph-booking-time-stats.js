@@ -24,7 +24,17 @@ export const GraphBookingTimeStats = createComponent({
 
   render() {
     //@@viewOn:private
-
+    function convertMinsToHrsMins(inputMinutes) {
+      let hours = Math.floor(inputMinutes / 60);
+      let minutes = inputMinutes % 60;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      let outputString = hours + ":" + minutes + `:00`;
+      if (outputString === "24:00:00") {
+        return "23:59:59";
+      } else {
+        return outputString;
+      }
+    }
     //@@viewOff:private
 
     //@@viewOn:hooks
@@ -50,62 +60,89 @@ export const GraphBookingTimeStats = createComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    let datas = [];
+    let preparedData = [];
     switch (state) {
       case "pending":
       case "pendingNoData":
         return <UU5.Bricks.Loading />;
       case "ready":
-        console.log(data);
-        for (let handleData of data.statistics) {
-          let date = new Date(handleData.datetime);
-          let datetime =
-            // date.getFullYear() +
-            // `-` +
-            // date.getMonth() +
-            // `-` +
-            // date.getDate() +
-            // ` ` +
-            `0` + date.getHours() + `:` + date.getMinutes() + `0`;
-          datas.push({ startedBookings: handleData.startedBookings, datetime: datetime });
-        }
-        console.log(datas);
+        preparedData = data.statistics.map((stat) => {
+          return {
+            ...stat,
+            time: convertMinsToHrsMins(stat.time),
+          };
+        });
+        console.log(preparedData);
         return (
           <div>
             <UU5.AmCharts.Chart
               type="XYChart"
               config={{
-                config: {
-                  series: [
-                    {
-                      id: "serie1",
-                      type: "LineSeries",
-                      dataFields: {
-                        valueY: "startedBookings",
-                        dateX: "datetime",
-                      },
+                series: [
+                  {
+                    id: "series1",
+                    type: "ColumnSeries",
+                    dataFields: {
+                      valueY: "startedBookings",
+                      categoryX: "time",
+                    },
+                    columns: {
                       strokeWidth: 2,
-                      fillOpacity: 0.5,
-                    },
-                  ],
-                  xAxes: [
-                    {
-                      type: "ValueAxis",
-                      dataFields: {
-                        category: "datetime",
+                      fill: UU5.Environment.colors.green.c500,
+                      fillOpacity: 0.3,
+                      states: {
+                        hover: {
+                          properties: {
+                            fill: UU5.Environment.colors.green.c500,
+                            fillOpacity: 0.8,
+                          },
+                        },
                       },
                     },
-                  ],
-                  yAxes: [
-                    {
-                      type: "CategoryAxis",
-                      dataFields: {
-                        category: "startedBookings",
+                    sequencedInterpolation: true,
+                    tooltipText: "[{categoryX}: bold]{valueY}[/]",
+                    tooltip: {
+                      pointerOrientation: "vertical",
+                    },
+                  },
+                  {
+                    id: "series2",
+                    type: "ColumnSeries",
+                    dataFields: {
+                      valueY: "finishedBookings",
+                      categoryX: "time",
+                    },
+                    columns: {
+                      strokeWidth: 2,
+                      fill: UU5.Environment.colors.red.c500,
+                      fillOpacity: 0.3,
+                      states: {
+                        hover: {
+                          properties: {
+                            fill: UU5.Environment.colors.red.c500,
+                            fillOpacity: 0.8,
+                          },
+                        },
                       },
                     },
-                  ],
-                  data: datas,
+                    sequencedInterpolation: true,
+                    tooltipText: "[{categoryX}: bold]{valueY}[/]",
+                    tooltip: {
+                      pointerOrientation: "vertical",
+                    },
+                  },
+                ],
+                cursor: {
+                  type: "XYCursor",
+                  behaviour: "zoomY",
+                  lineX: { disabled: true },
                 },
+                xAxes: [{ type: "CategoryAxis", dataFields: { category: "time" } }],
+                yAxes: [{ type: "ValueAxis" }],
+                scrollbarX: {
+                  type: "Scrollbar",
+                },
+                data: preparedData,
               }}
               height="512px"
             />
