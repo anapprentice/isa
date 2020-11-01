@@ -55,7 +55,7 @@ export const Home = createVisualComponent({
 
     return (
       <div {...attrs}>
-        <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Table #1 - area list</UU5.Bricks.Row>
+        <UU5.Bricks.Row className={CLASS_NAMES.heading()}>Area list - click for details</UU5.Bricks.Row>
         <AreaList />
       </div>
     );

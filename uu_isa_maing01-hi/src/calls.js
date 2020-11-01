@@ -33,6 +33,11 @@ let Calls = {
     return Calls.call("get", commandUri);
   },
 
+  areaStructure(dtoIn) {
+    let commandUri = Calls.getCommandUri("area/getAreaStructure");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);

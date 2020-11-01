@@ -12,6 +12,15 @@ const STATICS = {
   //@@viewOff:statics
 };
 
+const CLASS_NAMES = {
+  heading: () => Config.Css.css`
+    padding: 18px 0px 18px 18px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3d3d3d;
+  `,
+};
+
 export const AreaList = createComponent({
   ...STATICS,
 
@@ -25,13 +34,25 @@ export const AreaList = createComponent({
 
   render() {
     //@@viewOn:private
+    function redirectToAreaDetail(id) {
+      let route = "areaDetail";
+      let params = { id };
+      UU5.Environment.getRouter().setRoute(route, params);
+    }
+
     function getColumns() {
       return [
         {
           cell: (cellProps) => {
-            let content;
-            if(cellProps.data.areaType === "zone") content += <UU5.Bricks.Span style={{color:"red", fontSize:"24px"}}>{cellProps.data.name}</UU5.Bricks.Span>
-            return JSON.stringify(cellprops)
+            return (
+              <UU5.Bricks.Link
+                onClick={() => redirectToAreaDetail(cellProps.data.id)}
+                onCtrlClick={() => redirectToAreaDetail(cellProps.data.id)}
+                onWheelClick={() => redirectToAreaDetail(cellProps.data.id)}
+              >
+                <UU5.Bricks.Span className={CLASS_NAMES.heading()}> {cellProps.data.name}</UU5.Bricks.Span>
+              </UU5.Bricks.Link>
+            );
           },
         },
       ];
@@ -66,7 +87,6 @@ export const AreaList = createComponent({
             <Uu5Tiles.Controller data={data.areaStructure.itemList}>
               <Uu5Tiles.List viewType={"table"} columns={getColumns()} rowHeight={80} />
             </Uu5Tiles.Controller>
-            )
           </div>
         );
     }
