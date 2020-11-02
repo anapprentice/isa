@@ -9,6 +9,10 @@ const Lsi = {
       cs: "Grafy",
       en: "Charts",
     },
+    structure: {
+      cs: "Struktura",
+      en: "Structure",
+    },
     table: {
       cs: "Tabulky",
       en: "Tables",

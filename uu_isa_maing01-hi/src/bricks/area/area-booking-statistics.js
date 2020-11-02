@@ -17,6 +17,9 @@ const CLASS_NAMES = {
     font-size: 16px;
     color: #3d3d3d;
   `,
+  props: () => Config.Css.css`
+    font-weight: bold;
+  `,
 };
 
 export const AreaBookingStatistics = createComponent({
@@ -65,18 +68,16 @@ export const AreaBookingStatistics = createComponent({
           <div>
             <UU5.Bricks.Row className={CLASS_NAMES.main()}>
               <UU5.Bricks.Column>
-                <UU5.Bricks.Heading content={"ID :" + data.statistics.id} />
+                <UU5.Bricks.Span className={CLASS_NAMES.props()} content={"Workplace with booking count : "} />
+                <UU5.Bricks.Span content={data.statistics.workplaceWithBookingCount} />
               </UU5.Bricks.Column>
               <UU5.Bricks.Column>
-                <UU5.Bricks.Span
-                  content={"Workplace with booking count : " + data.statistics.workplaceWithBookingCount}
-                />
+                <UU5.Bricks.Span className={CLASS_NAMES.props()} content={"Booking count : " } />
+                <UU5.Bricks.Span content={data.statistics.bookingCount} />
               </UU5.Bricks.Column>
               <UU5.Bricks.Column>
-                <UU5.Bricks.Span content={"Booking count : " + data.statistics.bookingCount} />
-              </UU5.Bricks.Column>
-              <UU5.Bricks.Column>
-                <UU5.Bricks.Span content={"Total booking duration  : " + data.statistics.totalBookingDuration} />
+                <UU5.Bricks.Span className={CLASS_NAMES.props()} content={"Total booking duration  : "} />
+                <UU5.Bricks.Span content={data.statistics.totalBookingDuration} />
               </UU5.Bricks.Column>
             </UU5.Bricks.Row>
           </div>

@@ -19,6 +19,7 @@ const Home = UU5.Common.Component.lazy(() => import("../routes/home"));
 const About = UU5.Common.Component.lazy(() => import("../routes/about"));
 const Table = UU5.Common.Component.lazy(() => import("../routes/table"));
 const AreaDetail = UU5.Common.Component.lazy(() => import("../routes/area-detail"));
+const Structure = UU5.Common.Component.lazy(() => import("../routes/structure"));
 
 const DEFAULT_USE_CASE = "home";
 const ROUTES = {
@@ -27,6 +28,7 @@ const ROUTES = {
   table: { component: <Table /> },
   about: { component: <About /> },
   areaDetail: { component: <AreaDetail /> },
+  structure: { component: <Structure /> },
 };
 
 export const SpaAuthenticated = createVisualComponent({
